@@ -1,0 +1,89 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <h2 class="text-center">Budget List</h2>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-success rounded-pill" (click)="addBudget()">Add</button>
+            <br><br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Budget</th>
+                        <th>Month</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let rowData of budgets; let ri = index">
+                        <td>{{rowData.category}}</td>
+                        <td>{{rowData.budget}}</td>
+                        <td>{{rowData.month}}</td>
+                        <td>
+                            <button class="btn btn-danger" (click)="openEditDialog(rowData)">
+                                <i class="pi pi-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6" *ngIf="showForm">
+            <form [formGroup]="newBudgetForm" (ngSubmit)="saveBudgets()">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" formControlName="category">
+                        <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget</label>
+                    <input type="text" class="form-control" id="budget" formControlName="budget">
+                </div>
+                <div class="form-group">
+                    <label for="month">Month</label>
+                    <select class="form-control" id="month" formControlName="month">
+                        <option *ngFor="let month of months" [value]="month">{{month}}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Edit Budget" [(visible)]="display" [style]="{'width':'500px'}">
+    <ng-template pTemplate="header">
+        <span style="font-size: 19px;">Edit Budget</span>
+    </ng-template>
+   
+    <div class="p-fluid">
+        <div class="p-field">
+            <label style="font-size: 13px;">Please choose category :</label>
+            <select class="form-control" id="category" [(ngModel)]="newBudget.category">
+                <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+            </select>
+        </div>
+        <div class="p-field">
+            <label style="font-size: 13px;">Budget :</label>
+            <input pInputText placeholder="Budget" [(ngModel)]="newBudget.budget" />
+        </div>
+        <div class="p-field">
+            <label style="font-size: 13px;">Month :</label>
+            <select class="form-control" id="month" [(ngModel)]="newBudget.month">
+                <option *ngFor="let month of months" [value]="month">{{month}}</option>
+            </select>
+        </div>
+    </div>
+    
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Update Expense" (click)="updateBudget(newBudget)" class="p-button-raised p-button-rounded"></button>
+        <button pButton type="button" label="Delete Expense" (click)="deleteBudget(newBudget._id)" class="p-button-raised p-button-rounded p-button-danger"></button>
+    </ng-template>
+</p-dialog>
