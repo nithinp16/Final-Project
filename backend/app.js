@@ -26,6 +26,7 @@ app.use("/categories",generalRoutes)
 app.use("/budget",budgetRoutes)
 app.use("/expense",expenseRoutes)
 
+mongoose.connect("mongodb+srv://nithinpadigela1611:mongodb@projectcluster.axjvdag.mongodb.net/?retryWrites=true&w=majority&appName=ProjectCluster").then(console.log("Connected to database"));
 
 app.use(function(req, res, next) {
     res.status(err.status || 404).json({
@@ -37,13 +38,7 @@ app.use(function(req, res, next) {
       message: err.message
     })
   });
-mongoose.connect("mongodb://localhost:27017/b-t",{
-    useNewUrlParser:true,
-})
-.then(()=>{
-    console.log("connected to database")
 
-    app.listen(port,()=>{
-        console.log(`API listening to http://localhost:${port}`)
-    })
+app.listen(port,()=>{
+  console.log(`API listening to http://localhost:${port}`)
 })
